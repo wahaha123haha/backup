@@ -252,6 +252,19 @@
        <string>文件</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="pushButton_7">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>320</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>文件差异检测</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

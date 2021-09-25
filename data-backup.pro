@@ -11,6 +11,8 @@ CONFIG += c++11
 SOURCES += \
     MyCompress.cpp \
     MyCopy.cpp \
+    MyDiff.cpp \
+    MyOpenssl.cpp \
     MyPack.cpp \
     main.cpp \
     mainwindow.cpp
@@ -18,6 +20,8 @@ SOURCES += \
 HEADERS += \
     MyCompress.h \
     MyCopy.h \
+    MyDiff.h \
+    MyOpenssl.h \
     MyPack.h \
     mainwindow.h
 
