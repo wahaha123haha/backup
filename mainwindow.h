@@ -5,6 +5,19 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+
+
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <utime.h>
+#include <time.h>
+#include <sys/time.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -40,6 +53,8 @@ private slots:
     void on_checkBox_4_stateChanged(int arg1);
 
     void on_checkBox_5_stateChanged(int arg1);
+
+    void on_pushButton_7_clicked();
 
 private:
     Ui::MainWindow *ui;

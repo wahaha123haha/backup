@@ -3,7 +3,8 @@
 #include "MyCopy.h"
 #include "MyPack.h"
 #include "MyCompress.h"
-
+#include "MyDiff.h"
+#include "MyOpenssl.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -47,13 +48,13 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::on_pushButton_3_clicked()
 {
     char *src_c,*des_c;
-//    if(this->IS_Encryption==1){
-//        bool ok;
-//        QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
-//        if(ok&&!password.isEmpty()){
-//            this->copy_input_password=password;
-//        }
-//    }
+    if(this->IS_Encryption==1){
+        bool ok;
+        QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
+        if(ok&&!password.isEmpty()){
+            this->copy_input_password=password;
+        }
+    }
     QByteArray temp=src_file.toLatin1();
     if(temp.isEmpty()){
         QMessageBox::information(NULL, "错误", "请选择备份文件路径");
@@ -62,6 +63,11 @@ void MainWindow::on_pushButton_3_clicked()
     src_c=temp.data();
     temp=des_file.toLatin1();
     des_c=temp.data();
+    if(this->IS_Encryption==1){
+        MyOpenssl mo(src_file.toStdString(),des_file.toStdString());
+        mo.Encryption(copy_input_password.toStdString());
+        return;
+    }
     if(this->IS_Compress==1){
         MyCompress mc(src_c,des_c);
         mc.Compress();
@@ -98,6 +104,17 @@ void MainWindow::on_pushButton_5_clicked()
     temp=reduction_des_file.toLatin1();
     des_c=temp.data();
     char *src_temp=src_c+strlen(src_c)-4;
+    int is_dec=!strcmp(".des3",src_c+strlen(src_c)-5);
+    if(is_dec){
+        bool ok;
+        QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
+        if(ok&&!password.isEmpty()){
+            MyOpenssl mo(reduction_src_file.toStdString(),des_c);
+            mo.Deciphering(password.toStdString());
+            return;
+        }
+
+    }
     int is_tar=!strcmp(".tar",src_c+strlen(src_c)-4);
     if(is_tar){
         MyPack mp(src_c,des_c);
@@ -181,5 +198,12 @@ void MainWindow::on_checkBox_4_stateChanged(int arg1)
 void MainWindow::on_checkBox_5_stateChanged(int arg1)
 {
     reduce_isdir=abs(1-reduce_isdir);
+}
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    MyDiff md(reduction_src_file.toStdString(),reduction_des_file.toStdString());
+    md.FindDiff();
 }
 
