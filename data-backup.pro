@@ -14,6 +14,7 @@ SOURCES += \
     MyDiff.cpp \
     MyOpenssl.cpp \
     MyPack.cpp \
+    MyTImer.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -23,6 +24,7 @@ HEADERS += \
     MyDiff.h \
     MyOpenssl.h \
     MyPack.h \
+    MyTimer.h \
     mainwindow.h
 
 FORMS += \

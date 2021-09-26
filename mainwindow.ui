@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -120,6 +120,13 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
+        <widget class="QCheckBox" name="checkBox_6">
+         <property name="text">
+          <string>加密</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBox_3">
          <property name="text">
           <string>打包</string>
@@ -130,13 +137,6 @@
         <widget class="QCheckBox" name="checkBox_2">
          <property name="text">
           <string>压缩</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkBox">
-         <property name="text">
-          <string>加密</string>
          </property>
         </widget>
        </item>
@@ -154,6 +154,41 @@
       <property name="text">
        <string>文件</string>
       </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_7">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>50</y>
+        <width>122</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>定时 </string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_6">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>120</y>
+        <width>164</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>时间间隔（s）</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_5"/>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">

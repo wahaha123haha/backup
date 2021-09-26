@@ -1,10 +1,9 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "MyCopy.h"
-#include "MyPack.h"
-#include "MyCompress.h"
-#include "MyDiff.h"
-#include "MyOpenssl.h"
+
+int time_flag;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -17,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     IS_Compress=0;
     IS_Encryption=0;
     IS_Pack=0;
+    IS_Timer=0;
     copy_isdir=1;
     reduce_isdir=1;
 }
@@ -54,6 +54,19 @@ void MainWindow::on_pushButton_3_clicked()
         if(ok&&!password.isEmpty()){
             this->copy_input_password=password;
         }
+    }
+    if(this->IS_Timer==1){
+        time_flag=1;
+        int time_interval;
+        if(!ui->lineEdit_5->text().isEmpty())
+            time_interval=ui->lineEdit_5->text().toInt()*1000;
+        else
+            time_interval=5000;
+        MyTimer mt(src_file.toStdString(),des_file.toStdString(),time_interval,IS_Encryption,IS_Pack,IS_Compress,copy_input_password.toStdString(),NULL);
+        mt.MyTimerEvent();
+        int timer_id=mt.get_id();
+        ui->lineEdit_6->setText(QString::number(timer_id));
+        return;
     }
     QByteArray temp=src_file.toLatin1();
     if(temp.isEmpty()){
@@ -155,12 +168,14 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
     this->IS_Encryption=abs(1-this->IS_Encryption);
 }
 
-
+//设置还原目标路径
 void MainWindow::on_pushButton_6_clicked()
 {
     reduction_des_file=QFileDialog::getExistingDirectory(this,"test","/");
     ui->lineEdit_4->setText(reduction_des_file);
 }
+
+//获取目录/文件名
 char *get_myrelativecwd(char *src_origin){
     int i,j;
     char dest_temp[100],dest_end[100];
@@ -176,6 +191,8 @@ char *get_myrelativecwd(char *src_origin){
     strcpy(dest,dest_end);
     return dest;
 }
+
+//获取父目录
 char *get_parentpwd(char *src_origin){
     int i=strlen(src_origin)-1;
     while(src_origin[i]!='/')
@@ -189,21 +206,34 @@ char *get_parentpwd(char *src_origin){
     return parent;
 };
 
+//备份目录/文件
 void MainWindow::on_checkBox_4_stateChanged(int arg1)
 {
     copy_isdir=abs(1-copy_isdir);
 }
 
-
+//还原目录/文件
 void MainWindow::on_checkBox_5_stateChanged(int arg1)
 {
     reduce_isdir=abs(1-reduce_isdir);
 }
 
-
+//查找文件不同
 void MainWindow::on_pushButton_7_clicked()
 {
     MyDiff md(reduction_src_file.toStdString(),reduction_des_file.toStdString());
     md.FindDiff();
+}
+
+//是否定时
+void MainWindow::on_checkBox_7_stateChanged(int arg1)
+{
+    IS_Timer=abs(1-IS_Timer);
+}
+
+//关闭定时
+void MainWindow::on_pushButton_8_clicked()
+{
+    time_flag=0;
 }
 

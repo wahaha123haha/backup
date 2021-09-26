@@ -6,6 +6,12 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
+#include "MyCopy.h"
+#include "MyPack.h"
+#include "MyCompress.h"
+#include "MyDiff.h"
+#include "MyOpenssl.h"
+#include "MyTimer.h"
 
 #include <unistd.h>
 #include <string.h>
@@ -56,6 +62,10 @@ private slots:
 
     void on_pushButton_7_clicked();
 
+    void on_checkBox_7_stateChanged(int arg1);
+
+    void on_pushButton_8_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString src_file;
@@ -66,8 +76,10 @@ private:
     int IS_Encryption;
     int IS_Compress;
     int IS_Pack;
+    int IS_Timer;
     int copy_isdir;
     int reduce_isdir;
+
 };
 
 char *get_myrelativecwd(char *src_origin);
