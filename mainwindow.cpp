@@ -48,6 +48,18 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::on_pushButton_3_clicked()
 {
     char *src_c,*des_c;
+    QByteArray temp=src_file.toLatin1();
+    src_c=temp.data();
+    if(temp.isEmpty()){
+        QMessageBox::information(NULL, "错误", "请选择备份文件路径");
+        return;
+    }
+    temp=des_file.toLatin1();
+    des_c=temp.data();
+    if(temp.isEmpty()){
+        QMessageBox::information(NULL, "错误", "请选择目标路径");
+        return;
+    }
     if(this->IS_Encryption==1){
         bool ok;
         QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
@@ -64,34 +76,30 @@ void MainWindow::on_pushButton_3_clicked()
             time_interval=5000;
         MyTimer mt(src_file.toStdString(),des_file.toStdString(),time_interval,IS_Encryption,IS_Pack,IS_Compress,copy_input_password.toStdString(),NULL);
         mt.MyTimerEvent();
-        int timer_id=mt.get_id();
-        ui->lineEdit_6->setText(QString::number(timer_id));
+//        int timer_id=mt.get_id();
+//        ui->lineEdit_6->setText(QString::number(timer_id));
         return;
     }
-    QByteArray temp=src_file.toLatin1();
-    if(temp.isEmpty()){
-        QMessageBox::information(NULL, "错误", "请选择备份文件路径");
-        return;
-    }
-    src_c=temp.data();
-    temp=des_file.toLatin1();
-    des_c=temp.data();
     if(this->IS_Encryption==1){
         MyOpenssl mo(src_file.toStdString(),des_file.toStdString());
         mo.Encryption(copy_input_password.toStdString());
+        QMessageBox::information(NULL, "备份成功", "已完成备份");
         return;
     }
     if(this->IS_Compress==1){
         MyCompress mc(src_c,des_c);
         mc.Compress();
+        QMessageBox::information(NULL, "备份成功", "已完成备份");
         return;
     }
     if(this->IS_Pack==1){
         MyPack mp(src_c,des_c);
         mp.Pack();
+        QMessageBox::information(NULL, "备份成功", "已完成备份");
         return;
     }
     MyCopy(src_c,des_c);
+    QMessageBox::information(NULL, "备份成功", "已完成备份");
 }
 
 //选择还原备份文件
@@ -109,13 +117,17 @@ void MainWindow::on_pushButton_5_clicked()
 {
     char *src_c,*des_c;
     QByteArray temp=reduction_src_file.toLatin1();
+    src_c=temp.data();
     if(temp.isEmpty()){
-        QMessageBox::information(NULL, "错误", "请选择还原文件路径");
+        QMessageBox::information(NULL, "错误", "请选择备份文件路径");
         return;
     }
-    src_c=temp.data();
     temp=reduction_des_file.toLatin1();
     des_c=temp.data();
+    if(temp.isEmpty()){
+        QMessageBox::information(NULL, "错误", "请选择目标路径");
+        return;
+    }
     char *src_temp=src_c+strlen(src_c)-4;
     int is_dec=!strcmp(".des3",src_c+strlen(src_c)-5);
     if(is_dec){
@@ -124,6 +136,7 @@ void MainWindow::on_pushButton_5_clicked()
         if(ok&&!password.isEmpty()){
             MyOpenssl mo(reduction_src_file.toStdString(),des_c);
             mo.Deciphering(password.toStdString());
+            QMessageBox::information(NULL, "还原成功", "已完成还原");
             return;
         }
 
@@ -132,6 +145,7 @@ void MainWindow::on_pushButton_5_clicked()
     if(is_tar){
         MyPack mp(src_c,des_c);
         mp.RePack();
+        QMessageBox::information(NULL, "还原成功", "已完成还原");
         return;
     }
     src_temp=src_c+strlen(src_c)-7;
@@ -139,9 +153,11 @@ void MainWindow::on_pushButton_5_clicked()
     if(is_gz){
         MyCompress mc(src_c,des_c);
         mc.ReCompress();
+        QMessageBox::information(NULL, "还原成功", "已完成还原");
         return;
     }
     MyCopy(src_c,des_c);
+    QMessageBox::information(NULL, "还原成功", "已完成还原");
 }
 
 //设置打包
@@ -235,5 +251,14 @@ void MainWindow::on_checkBox_7_stateChanged(int arg1)
 void MainWindow::on_pushButton_8_clicked()
 {
     time_flag=0;
+}
+
+//设置加密
+void MainWindow::on_checkBox_6_stateChanged(int arg1)
+{
+    if(!ui->checkBox_3->isChecked()){
+        ui->checkBox_3->setChecked(true);
+    }
+    this->IS_Encryption=abs(1-this->IS_Encryption);
 }
 
