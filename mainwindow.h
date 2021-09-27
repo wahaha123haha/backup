@@ -6,6 +6,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QTimer>
+#include <QThread>
 
 #include "MyCopy.h"
 #include "MyPack.h"
@@ -25,6 +26,8 @@
 #include <utime.h>
 #include <time.h>
 #include <sys/time.h>
+#include <utility>
+#include <vector>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -82,6 +85,11 @@ private:
     int IS_Timer;
     int copy_isdir;
     int reduce_isdir;
+
+    MyTimer *mt;
+
+    std::vector<MyTimer *> timerVec;
+    std::vector<QString> nameVec;
 
 };
 

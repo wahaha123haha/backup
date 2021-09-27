@@ -14,7 +14,7 @@ SOURCES += \
     MyDiff.cpp \
     MyOpenssl.cpp \
     MyPack.cpp \
-    MyTImer.cpp \
+    MyTimer.cpp \
     main.cpp \
     mainwindow.cpp
 

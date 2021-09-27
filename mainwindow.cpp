@@ -2,7 +2,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-int time_flag;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,16 +67,14 @@ void MainWindow::on_pushButton_3_clicked()
         }
     }
     if(this->IS_Timer==1){
-        time_flag=1;
         int time_interval;
         if(!ui->lineEdit_5->text().isEmpty())
             time_interval=ui->lineEdit_5->text().toInt()*1000;
         else
             time_interval=5000;
-        MyTimer mt(src_file.toStdString(),des_file.toStdString(),time_interval,IS_Encryption,IS_Pack,IS_Compress,copy_input_password.toStdString(),NULL);
-        mt.MyTimerEvent();
-//        int timer_id=mt.get_id();
-//        ui->lineEdit_6->setText(QString::number(timer_id));
+        timerVec.push_back(new MyTimer(src_file.toStdString(),des_file.toStdString(),time_interval,IS_Encryption,IS_Pack,IS_Compress,copy_input_password.toStdString(),NULL));
+        nameVec.push_back(src_file);
+        ui->comboBox->addItem(src_file);
         return;
     }
     if(this->IS_Encryption==1){
@@ -250,7 +247,18 @@ void MainWindow::on_checkBox_7_stateChanged(int arg1)
 //关闭定时
 void MainWindow::on_pushButton_8_clicked()
 {
-    time_flag=0;
+    QString path = ui->comboBox->currentText();
+    size_t index = 0;
+    for(;index < nameVec.size(); ++index){
+        if(nameVec[index] == path){
+            mt = timerVec[index];
+            delete mt;
+            timerVec.erase(timerVec.begin()+index);
+            nameVec.erase(nameVec.begin()+index);
+            ui->comboBox->removeItem(ui->comboBox->currentIndex());
+            break;
+        }
+    }
 }
 
 //设置加密
