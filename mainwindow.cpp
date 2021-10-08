@@ -61,9 +61,15 @@ void MainWindow::on_pushButton_3_clicked()
     }
     if(this->IS_Encryption==1){
         bool ok;
-        QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
-        if(ok&&!password.isEmpty()){
-            this->copy_input_password=password;
+        while (1) {
+            QString password = QInputDialog::getText(this, tr("密码"),tr("请输入密码"), QLineEdit::Password,0, &ok);
+            if(ok&&!password.isEmpty()){
+                this->copy_input_password=password;
+                break;
+            }
+            if(!ok){
+                return;
+            }
         }
     }
     if(this->IS_Timer==1){
